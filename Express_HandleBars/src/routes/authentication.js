@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
+const { isLoggedIn, isNotLoggedIn, existUser } = require('../lib/auth');
 const { encryptPassword, matchPassword } = require('../lib/helpers')
 
 const pool = require('../database');
@@ -46,7 +46,7 @@ router.get('/signup', isNotLoggedIn, (req, res) => {
     res.render('auth/signup')
 })
 
-router.post('/signup', isNotLoggedIn, async (req, res) => {
+router.post('/signup', existUser, async (req, res) => {
     const password = await encryptPassword(req.body.password);
     pool.query('INSERT INTO user(username,password) VALUES(?,?)', [req.body.username, password]),function(err, result) {
         if (err) {
