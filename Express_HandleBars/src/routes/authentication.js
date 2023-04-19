@@ -42,4 +42,19 @@ router.post('/change-password', isLoggedIn, async (req, res) => {
     }
 })
 
+router.get('/signup', isNotLoggedIn, (req, res) => {
+    res.render('auth/signup')
+})
+
+router.post('/signup', isNotLoggedIn, async (req, res) => {
+    const password = await encryptPassword(req.body.password);
+    pool.query('INSERT INTO user(username,password) VALUES(?,?)', [req.body.username, password]),function(err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/signin')
+        }
+    }
+})
+
 module.exports = router;
