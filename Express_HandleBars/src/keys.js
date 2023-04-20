@@ -1,11 +1,8 @@
-require("dotenv").config();
-console.log(process.env);
-
 module.exports = {
   database: {
-    host: "localhost",
-    user: "root",
-    password: "itesm",
-    database: "test_database",
-  },
-};
+      host: process.env.MYSQL_HOST || 'localhost',
+      user: process.env.MYSQL_USER || 'root',
+      password: process.env.MYSQL_PASSWORD || 'itesm',
+      database: process.env.MYSQL_DATABASE || 'test_database'
+  }
+}

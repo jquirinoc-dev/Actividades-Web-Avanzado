@@ -5,11 +5,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: itesm
       MYSQL_DATABASE: test_database
-    restart: always
-  express-handlebars:
-    build: ./Express_Handlebars
     ports:
-      - "4000:4000"
+      - "3306:3306"
+    restart: always
+  express-server:
     depends_on:
       - db
-    restart: always
+    build: ./Express_Handlebars
+    environment:
+      MYSQL_DATABASE: test_database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: itesm
+      MYSQL_HOST: db
+    ports:
+      - "3000:3000"
+    restart: on-failure
